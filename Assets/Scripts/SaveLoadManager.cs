@@ -8,7 +8,7 @@ public class SaveLoadManager : MonoBehaviour
     public static SaveLoadManager Instance;
 
     public int highScore = 0;
-    public string highScoreName = string.Empty;
+    public string highScoreName = "..." ;
     public bool newHighScore;
     public bool isGameover = false;
 

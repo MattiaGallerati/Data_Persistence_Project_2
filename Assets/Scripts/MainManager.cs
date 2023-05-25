@@ -26,7 +26,7 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //if(SaveLoadManager.Instance.highScore > 0)
+        //Display current highscore and updates isGameover bool
         HighScoreText.text = SaveLoadManager.Instance.highScoreName + " : " + SaveLoadManager.Instance.highScore;
         SaveLoadManager.Instance.isGameover = m_GameOver;
 
@@ -61,15 +61,6 @@ public class MainManager : MonoBehaviour
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
             }
         }
-        /*
-        else if (m_GameOver)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            }
-        }
-        */
     }
 
     void AddPoint(int point)
@@ -82,15 +73,17 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         SaveLoadManager.Instance.isGameover = m_GameOver;
+        //Check if there is a new highscore
         if (m_Points > SaveLoadManager.Instance.highScore)
         {
+            //next time you go to menu the input field will be active
             SaveLoadManager.Instance.newHighScore = true;
             SaveLoadManager.Instance.highScore = m_Points;
         }
         else
             SaveLoadManager.Instance.newHighScore = false;
-        //SaveLoadManager.Instance.Save();
+        //back to menu scene
         SceneManager.LoadScene(0);
-        //GameOverText.SetActive(true);
+        
     }
 }
