@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
+    
+
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
 
-    public Text ScoreText;
+    public TMP_Text ScoreText;
+    public TMP_Text HighScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -22,6 +26,10 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //if(SaveLoadManager.Instance.highScore > 0)
+        HighScoreText.text = SaveLoadManager.Instance.highScoreName + " : " + SaveLoadManager.Instance.highScore;
+        SaveLoadManager.Instance.isGameover = m_GameOver;
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -53,6 +61,7 @@ public class MainManager : MonoBehaviour
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
             }
         }
+        /*
         else if (m_GameOver)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -60,6 +69,7 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+        */
     }
 
     void AddPoint(int point)
@@ -71,6 +81,16 @@ public class MainManager : MonoBehaviour
     public void GameOver()
     {
         m_GameOver = true;
-        GameOverText.SetActive(true);
+        SaveLoadManager.Instance.isGameover = m_GameOver;
+        if (m_Points > SaveLoadManager.Instance.highScore)
+        {
+            SaveLoadManager.Instance.newHighScore = true;
+            SaveLoadManager.Instance.highScore = m_Points;
+        }
+        else
+            SaveLoadManager.Instance.newHighScore = false;
+        //SaveLoadManager.Instance.Save();
+        SceneManager.LoadScene(0);
+        //GameOverText.SetActive(true);
     }
 }
